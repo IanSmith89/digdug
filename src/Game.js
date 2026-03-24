@@ -250,8 +250,9 @@ export class Game {
         // Clear bonus items
         this.bonusItems = [];
 
-        // Reset dropped rocks counter (but NOT bonusSpawnCount - that persists across levels)
+        // Reset dropped rocks counter and bonus spawn count for new level
         this.droppedRocksCount = 0;
+        this.bonusSpawnCount = 0;
 
         // Reset rock respawn timer
         this.rockRespawnTimer = 0;
