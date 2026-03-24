@@ -439,23 +439,16 @@ export class LevelManager {
     /**
      * Spawn bonus item in center of screen
      */
-    spawnBonusItem() {
+    spawnBonusItem(bonusSpawnCount = 0) {
         const centerX = Math.floor(GRID_WIDTH / 2) * TILE_SIZE;
         const centerY = Math.floor(GRID_HEIGHT / 2) * TILE_SIZE;
 
-        // 1. Calculate the "Base Index" based on level
-        // (This logic was previously inside drawBonusItem)
         const level = this.currentLevel || 1;
-        const floorIndex = Math.min(Math.floor((level - 1) / 20), 8);
-
-        // 2. Get the local sequence (0, 1, or 2)
-        // Assume we track a global 'bonusCounter' or random value
-        const rawIndex = this.bonusCounter || 0;
-        const localIndex = rawIndex % 3;
-
-        // 3. CALCULATE THE FINAL IDENTITY NOW
-        // This is the "Real" index (0 = prize_1, 1 = prize_2, etc.)
-        const finalPrizeIndex = Math.min(floorIndex + localIndex, 10); // Max index 10 (Prize 11)
+        // Level 1 → 1 prize available, level 2 → 2, ..., level 11+ → all 11
+        const availableCount = Math.min(level, 11);
+        const maxIndex = availableCount - 1;
+        // Cycle backward: spawnCount 0 → maxIndex, 1 → maxIndex-1, ...
+        const finalPrizeIndex = maxIndex - (bonusSpawnCount % availableCount);
 
         return {
             x: centerX,
